@@ -21,7 +21,9 @@ VALUES
 
 -- ========================================
 -- Project Table
--- Adding on delete cascade will delete all projects belonging to an organization if the organization is deleted, not required but I am choosing to add it just in case it helps in a future week
+-- Adding on delete cascade will delete all projects belonging 
+-- to an organization if the organization is deleted; not required 
+-- but I am choosing to add it just in case it helps in a future week.
 -- ========================================
 CREATE TABLE project (
     project_id SERIAL PRIMARY KEY,
@@ -62,3 +64,66 @@ VALUES
 (3, 'Senior Technology Help', 'Assist older adults with smartphones, email, and video calls at the senior center.', 'Big Spring, TX', '2026-11-20'),
 (3, 'Winter Coat Collection', 'Gather, clean, and distribute warm coats to families in need before the coldest months.', 'Midland, TX', '2026-12-12'),
 (3, 'Spring Park Cleanup', 'Remove litter, clear trails, and mulch garden beds at three city parks.', 'Andrews, TX', '2027-05-08');
+
+
+-- ========================================
+-- Category Table
+-- ========================================
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ========================================
+-- Insert sample data: Categories
+-- ========================================
+INSERT INTO category (name)
+VALUES
+('Environmental'),
+('Education'),
+('Community Support');
+
+-- ========================================
+-- Project/Category Junction Table
+-- Resolves the many-to-many relationship between project and category
+-- into two one-to-many relationships. The composite primary key allows a
+-- project to have many categories and a category to have many projects,
+-- while preventing the same pairing from being stored twice.
+-- ========================================
+CREATE TABLE project_category (
+    project_id INTEGER NOT NULL REFERENCES project(project_id) ON DELETE CASCADE,
+    category_id INTEGER NOT NULL REFERENCES category(category_id) ON DELETE CASCADE,
+    PRIMARY KEY (project_id, category_id)
+);
+
+-- ========================================
+-- Insert sample data: Project Categories
+-- Category ids: 1 = Environmental, 2 = Education, 3 = Community Support
+-- ========================================
+
+-- BrightFuture Builders projects
+INSERT INTO project_category (project_id, category_id)
+VALUES
+(1, 3),         -- Wheelchair Ramp Build
+(2, 3),         -- Playground Restoration
+(3, 3),         -- Senior Home Repair Day
+(4, 3),         -- Community Center Painting
+(5, 3);         -- Bus Shelter Installation
+
+-- GreenHarvest Growers projects
+INSERT INTO project_category (project_id, category_id)
+VALUES
+(6, 1),         -- Fall Community Garden Prep
+(7, 1), (7, 2), -- Seed Library Launch
+(8, 1), (8, 2), -- Composting Workshop
+(9, 1), (9, 3), -- Winter Greenhouse Build
+(10, 1), (10, 3); -- Neighborhood Orchard Planting
+
+-- UnityServe Volunteers projects
+INSERT INTO project_category (project_id, category_id)
+VALUES
+(11, 3),          -- Autumn Food Drive
+(12, 2),          -- After-School Tutoring
+(13, 2), (13, 3), -- Senior Technology Help
+(14, 3),          -- Winter Coat Collection
+(15, 1), (15, 3); -- Spring Park Cleanup
