@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+<main>
+    <h1><%= title %></h1>
+
+    <h2><%= projectDetails.title %></h2>
+
+    <% const projectDate = projectDetails.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); %>
+
+    <p>Description: <%= projectDetails.description %></p>
+    <p>Date: <%= projectDate %></p>
+    <p>Location: <%= projectDetails.location %></p>
+    <p>Organization: <a href="/organization/<%= projectDetails.organization_id %>"><%= projectDetails.organization_name %></a></p>
+</main>
+<%- include('partials/footer') %>
