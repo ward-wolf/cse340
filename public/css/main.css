@@ -327,6 +327,48 @@ main ul li:has(img) strong {
     }
 }
 
+/* --- Category tags: pill links, not cards --- */
+main ul.category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+}
+
+main ul.category-tags li {
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+main ul.category-tags li:hover {
+    box-shadow: none;
+    transform: none;
+}
+
+main ul.category-tags a {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    background-color: #E7EEF3;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-brand-mid);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+main ul.category-tags a:hover,
+main ul.category-tags a:focus-visible {
+    background-color: #F6E9E1;
+    color: var(--color-accent-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 /* --------------------------------------------------------------------------
    8. Footer
    -------------------------------------------------------------------------- */
