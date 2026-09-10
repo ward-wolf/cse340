@@ -1,5 +1,5 @@
 <%- include('partials/header') %>
-<main>
+<main id="main-content">
     <h1><%= title %></h1>
 
     <h2><%= organizationDetails.name %></h2>
@@ -13,5 +13,7 @@
             <li><a href="/project/<%= project.project_id %>"><%= project.title %></a></li>
         <% }) %>
     </ul>
+
+    <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
 </main>
 <%- include('partials/footer') %>

@@ -68,11 +68,16 @@ VALUES
 
 -- ========================================
 -- Category Table
+-- Category names are unique without regard to case, so "Education" and
+-- "education" cannot both exist. This is enforced by the unique index on
+-- LOWER(name) below rather than by a UNIQUE constraint on the column itself.
 -- ========================================
 CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL
 );
+
+CREATE UNIQUE INDEX category_name_lower_key ON category (LOWER(name));
 
 -- ========================================
 -- Insert sample data: Categories

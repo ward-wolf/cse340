@@ -25,6 +25,29 @@
     --color-on-brand-muted: #BFD2DE; /* muted text on navy (8.64:1)         */
     --color-border: #D3DDE4;
 
+    /* Component tints — muted to sit alongside the navy/rust palette.
+       Every ink/background pair below exceeds WCAG AAA (7:1). */
+    --color-field-border: #74899A;
+    --color-field-placeholder: #5B7180;
+    --color-tag-bg: #E7EEF3;
+    --color-tag-bg-hover: #F6E9E1;
+
+    --color-success-ink: #14502F;    /* 8.12:1 on its background */
+    --color-success-bg: #E6F0E9;
+    --color-success-border: #C6DCCD;
+
+    --color-error-ink: #8A2B14;      /* 7.25:1 */
+    --color-error-bg: #F6E9E1;
+    --color-error-border: #E4CCC0;
+
+    --color-warning-ink: #6F4408;    /* 7.41:1 */
+    --color-warning-bg: #FAF0DC;
+    --color-warning-border: #E9D8B4;
+
+    --color-info-ink: #12496A;       /* 8.20:1 */
+    --color-info-bg: #E7EEF3;
+    --color-info-border: #CFDDE7;
+
     /* Typography */
     --font-body: "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont,
                  "Helvetica Neue", Arial, sans-serif;
@@ -351,7 +374,7 @@ main ul.category-tags li:hover {
 main ul.category-tags a {
     display: inline-block;
     padding: 0.3rem 0.75rem;
-    background-color: #E7EEF3;
+    background-color: var(--color-tag-bg);
     border: 1px solid var(--color-border);
     border-radius: 999px;
     color: var(--color-brand-mid);
@@ -363,14 +386,178 @@ main ul.category-tags a {
 
 main ul.category-tags a:hover,
 main ul.category-tags a:focus-visible {
-    background-color: #F6E9E1;
+    background-color: var(--color-tag-bg-hover);
     color: var(--color-accent-dark);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
 /* --------------------------------------------------------------------------
-   8. Footer
+   8. Skip link
+   Hidden until focused, so keyboard users can jump past the nav (WCAG 2.4.1).
+   -------------------------------------------------------------------------- */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-brand);
+    color: var(--color-on-brand);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0 0 var(--radius) 0;
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+/* --------------------------------------------------------------------------
+   9. Forms
+   -------------------------------------------------------------------------- */
+.form-group {
+    margin-bottom: var(--space-md);
+    max-width: 34rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--space-xs);
+    color: var(--color-brand);
+    font-weight: 600;
+    font-size: var(--text-sm);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-field-border);
+    border-radius: var(--radius);
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: var(--text-base);   /* >= 16px stops iOS zooming on focus */
+    line-height: 1.4;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+textarea {
+    min-height: 7rem;
+    resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--color-field-placeholder);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-brand-mid);
+    box-shadow: 0 0 0 3px rgba(18, 73, 106, 0.15);
+}
+
+/* Checkbox rows on the assign-categories form */
+input[type="checkbox"] {
+    width: 1.5rem;              /* 24px minimum target size (WCAG 2.5.8) */
+    height: 1.5rem;
+    margin-right: var(--space-xs);
+    accent-color: var(--color-brand);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+input[type="checkbox"] + label {
+    display: inline-block;
+    padding-block: 0.25rem;     /* enlarges the clickable label area */
+    cursor: pointer;
+    font-weight: 400;
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    vertical-align: middle;
+}
+
+button,
+input[type="submit"] {
+    display: inline-block;
+    min-height: 2.75rem;           /* >= 24px target size (WCAG 2.5.8) */
+    padding: 0.65rem 1.5rem;
+    background-color: var(--color-brand);
+    border: 1px solid var(--color-brand);
+    border-radius: var(--radius);
+    color: var(--color-on-brand);
+    font-family: inherit;
+    font-size: var(--text-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: var(--color-brand-mid);
+    border-color: var(--color-brand-mid);
+}
+
+/* --------------------------------------------------------------------------
+   10. Flash messages
+   Semantic status colors, desaturated to match the site palette.
+   -------------------------------------------------------------------------- */
+.alert {
+    /* Rendered between <nav> and <main>, so it is constrained and centred
+       to line up with the content panel below it. */
+    width: 100%;
+    max-width: var(--container);
+    margin: var(--space-md) auto 0;
+    padding: var(--space-md);
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+}
+
+.alert p {
+    margin: 0;
+    max-width: none;
+}
+
+.alert p + p {
+    margin-top: var(--space-xs);
+}
+
+.alert.success {
+    color: var(--color-success-ink);
+    background-color: var(--color-success-bg);
+    border-color: var(--color-success-border);
+}
+
+.alert.error {
+    color: var(--color-error-ink);
+    background-color: var(--color-error-bg);
+    border-color: var(--color-error-border);
+}
+
+.alert.warning {
+    color: var(--color-warning-ink);
+    background-color: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+}
+
+.alert.info {
+    color: var(--color-info-ink);
+    background-color: var(--color-info-bg);
+    border-color: var(--color-info-border);
+}
+
+/* --------------------------------------------------------------------------
+   11. Footer
    -------------------------------------------------------------------------- */
 footer {
     flex-shrink: 0;
@@ -392,7 +579,7 @@ footer a {
 }
 
 /* --------------------------------------------------------------------------
-   9. Accessibility preferences
+   12. Accessibility preferences
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -418,7 +605,7 @@ footer a {
 }
 
 /* --------------------------------------------------------------------------
-   10. Print
+   13. Print
    -------------------------------------------------------------------------- */
 @media print {
     nav,
