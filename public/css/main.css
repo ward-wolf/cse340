@@ -293,6 +293,22 @@ main ul li:hover {
     transform: translateY(-2px);
 }
 
+/* Standalone action links (a paragraph containing only a link) and links in
+   list cards get vertical padding so their target area clears 24px
+   (WCAG 2.5.8). Links inline within a sentence are left alone. */
+main p > a:only-child,
+main ul li a:not(.org-email):not(.category-tags a) {
+    display: inline-block;
+    padding-block: 0.2rem;
+}
+
+/* Paragraphs inside a card are detail lines, not body copy, so they use
+   tighter spacing than the global <p> rule. */
+main ul li p {
+    margin: 0.15rem 0 0;
+    max-width: none;
+}
+
 /* --- Organizations: card grid with centered logos --- */
 main ul:has(img) {
     gap: var(--space-md);

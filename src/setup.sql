@@ -132,3 +132,50 @@ VALUES
 (13, 2), (13, 3), -- Senior Technology Help
 (14, 3),          -- Winter Coat Collection
 (15, 1), (15, 3); -- Spring Park Cleanup
+
+
+-- Create roles table
+
+CREATE TABLE roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    role_description TEXT
+);
+
+-- Insert roles into table
+
+INSERT INTO roles (role_name, role_description) VALUES 
+    ('user', 'Standard user with basic access'),
+    ('admin', 'Administrator with full system access');
+
+-- Verify the data was inserted
+SELECT * FROM roles;
+
+-- Create users table
+
+-- Email addresses are unique without regard to case, so 'user@site.com' and
+-- 'User@Site.com' cannot both register. This is enforced by the unique index on
+-- LOWER(email) below rather than by a UNIQUE constraint on the column itself.
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role_id INTEGER REFERENCES roles(role_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX users_email_lower_key ON users (LOWER(email));
+
+-- Insert a test user
+INSERT INTO users (name, email, password_hash, role_id) 
+VALUES ('testuser', 'test@example.com', 'placeholder_hash', 1);
+
+-- Join users and roles to see complete information
+SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
+FROM users u
+JOIN roles r ON u.role_id = r.role_id;
+
+-- Delete the test user
+DELETE FROM users WHERE email = 'test@example.com';
+
